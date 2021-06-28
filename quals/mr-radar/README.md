@@ -1,9 +1,10 @@
 # Mr. Radar
 
 <div align="center">
-[![Categories Badge](/images/Categories-Guardians%20of%20the...-BrightGreen.svg)](https://shields.io/)
-[![Points Badge](/images/Points-304-blue.svg)](https://shields.io/)
-[![Solves Badge](/images/Solves-5-blue.svg)](https://shields.io/)
+
+![Categories Badge](https://shields.io/badge/Categories-Guardians%20of%20the...-BrightGreen.svg)
+![Points Badge](https://shields.io/badge/Points-304-blue.svg)
+![Solves Badge](https://shields.io/badge/Solves-5-blueviolet.svg)
 </div>
 
 ## Prompt
