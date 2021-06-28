@@ -46,7 +46,7 @@
 
 ## Solution
 
-The provided [`radar_data.txt`](/radar_data.txt) file has 100 of the pulses mentioned in the prompt, each one second apart.  
+The provided [`radar_data.txt`](./radar_data.txt) file has 100 of the pulses mentioned in the prompt, each one second apart.  
 
 Connecting to the server and providing the ticket provides no new information that wasn't provided in the prompt, but it does have a lovely ASCII banner:
 
