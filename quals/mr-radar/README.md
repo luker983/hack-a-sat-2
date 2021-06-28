@@ -48,10 +48,47 @@
 
 The provided [`radar_data.txt`](./radar_data.txt) file has 100 of the pulses mentioned in the prompt, each one second apart.  
 
-Connecting to the server and providing the ticket provides no new information that wasn't provided in the prompt, but it does have a lovely ASCII banner:
+Connecting to the server and providing the ticket provides no new information that wasn't provided in the prompt, but it does have a lovely banner:
 
 ```
-splash screen here
+                             RADAR
+                           CHALLENGE
+
+
+                      +o+
+                   o    .
+               o         .
+            o             .
+          o                .r
+        o                   .
+      o                      .
+    o                         .
+   o                           . az,el
+  o                  ...........A......
+ o      .................          ............
+   .......                                    ...........
+.....                                                    .....
+
+
+Welcome to the Radar Challenge!
+Given the radar pulse returns of a satellite, determine its orbital parameters (assume two-body dynamics).
+Each pulse has been provided as:
+   t,  timestamp (UTC)
+   az, azimuth (degrees) +/- 0.001 deg
+   el, elevation (degrees) +/- 0.001 deg
+   r,  range (km) +/- 0.1 km
+The radar is located at Kwajalein, 8.7256 deg latitude, 167.715 deg longitude, 35m altitude.
+
+Estimate the satellite's orbit by providing the following parameters:
+   a,  semi-major axis (km)
+   e,  eccentricity (dimensionless)
+   i,  inclination (degrees)
+   Ω,  RAAN (degrees)
+   ω,  argument of perigee (degrees)
+   υ,  true anomaly (degrees)
+
+What is the satellite's orbit at 2021-06-27 00:09:52 UTC?
+   a (km):
 ```
 
 <div align="center">
