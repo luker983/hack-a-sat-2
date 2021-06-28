@@ -48,7 +48,16 @@
 
 The provided [`radar_data.txt`](./radar_data.txt) file has 100 of the pulses mentioned in the prompt, each one second apart.  
 
-Connecting to the server and providing the ticket provides no new information that wasn't provided in the prompt, but it does have a lovely banner:
+```
+time az(deg) el(deg) range(km)
+2021-06-27-00:08:12.000-UTC	232.1248732	4.608410995	5561.036162
+2021-06-27-00:08:13.000-UTC	232.1207825	4.687512746	5558.256788
+2021-06-27-00:08:14.000-UTC	232.1161302	4.765942656	5555.508003
+2021-06-27-00:08:15.000-UTC	232.1132568	4.843875409	5552.630467
+...
+```
+
+Connecting to the server and providing the ticket gives us no new information, but it does have a lovely banner:
 
 ```
                              RADAR
@@ -90,6 +99,31 @@ Estimate the satellite's orbit by providing the following parameters:
 What is the satellite's orbit at 2021-06-27 00:09:52 UTC?
    a (km):
 ```
+
+The first challenge in this category was to derive the orbital elements from the position and velocity of a spacecraft at a given time. There are many off-the-shelf tools that can be used to solve this problem, one of which is the [OrbitalPy](https://github.com/RazerM/orbital) package:
+
+```
+>>> orbit = orbital.KeplerianElements.from_state_vector(position, velocity, orbital.earth, ref_epoch)
+>>> print(orbit)
+KeplerianElements:
+    Semimajor axis (a)                           =  24732.886 km
+    Eccentricity (e)                             =      0.706807
+    Inclination (i)                              =      0.1 deg
+    Right ascension of the ascending node (raan) =     90.2 deg
+    Argument of perigee (arg_pe)                 =    226.6 deg
+    Mean anomaly at reference epoch (M0)         =     16.5 deg
+    Period (T)                                   = 10:45:09.999830
+    Reference epoch (ref_epoch)                  = 2021-06-26 19:20:00
+        Mean anomaly (M)                         =     16.5 deg
+        Time (t)                                 = 0:00:00
+        Epoch (epoch)                            = 2021-06-26 19:20:00
+```
+
+If we are going to use the same tool to get the orbital elements in this problem, we need a few things:
+
+* The position of the satellite at the last radar pulse using the J2000 coordinate system
+* The velocity of the satellite at the last radar pulse in km/s
+* The reference epoch provided to us in the prompt: `2021-06-27 00:09:52 UTC`
 
 <div align="center">
 
