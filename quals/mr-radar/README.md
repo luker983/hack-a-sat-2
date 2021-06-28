@@ -24,23 +24,23 @@
 > * ω, argument of perigee (degrees)
 > * υ, true anomaly (degrees)
 > at the time of the final radar pulse, 2021-06-27-00:09:52.000-UTC
-
-### Ticket
-
+> 
+> ### Ticket
+> 
 > Present this ticket when connecting to the challenge:  
 > `ticket{hotel708324victor2:...}`  
 > Don't share your ticket with other teams. 
-
-### Connecting
-
+> 
+> ### Connecting
+> 
 > Connect to the challenge on:  
 > `moon-virus.satellitesabove.me:5021`  
 > 
 > Using netcat, you might run:  
 > `nc moon-virus.satellitesabove.me 5021`
-
-### Files
-
+> 
+> ### Files
+> 
 > You'll need these files to solve the challenge. 
 > * [https://static.2021.hackasat.com/zwv7nd5sj9vj9wk88o8aul48eun9](https://static.2021.hackasat.com/zwv7nd5sj9vj9wk88o8aul48eun9)
 
@@ -58,10 +58,6 @@ splash screen here
 
 ![Orbit Animation](img/orbit.gif)
 </div>
-
-We did it! The challenge is complete and the journalist has been saved. 
-
----
 
 ## Resources
 
