@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Categories Badge](https://shields.io/badge/Categories-Guardians%20of%20the...-BrightGreen.svg)
+![Category Badge](https://shields.io/badge/Category-Guardians%20of%20the...-BrightGreen.svg)
 ![Points Badge](https://shields.io/badge/Points-304-blue.svg)
 ![Solves Badge](https://shields.io/badge/Solves-5-blueviolet.svg)
 </div>
