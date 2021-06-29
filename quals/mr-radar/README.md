@@ -139,7 +139,7 @@ Feeding the last line of [`radar_data.txt`](./radar_data.txt) into this converte
 
 ### Velocity
 
-Velocity is the other half of the puzzle. Getting an accurate velocity with the data provided is not as simple as it might seem. Our initial, naive strategy was to estimate it by taking the difference of two positions. The issue is that the resulting velocity occurs at some unknown point between the two positions. Without having more granular data or information about the orbit, a good estimate of instantaneous velocity is hard to determine. This graphic highlights the variance in the orbits using this approach:
+Velocity is the other half of the puzzle. Getting an accurate velocity with the data provided is not as simple as it might seem. Our initial, naive strategy was to estimate it by taking the difference of two positions. The issue is that the resulting velocity occurs at some unknown point between the two positions. Without having more granular data or more information about the orbit, a good estimate of instantaneous velocity is hard to determine. This graphic highlights the variance in the orbits using this approach:
 
 <div align="center">
 
