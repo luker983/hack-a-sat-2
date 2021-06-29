@@ -100,7 +100,7 @@ What is the satellite's orbit at 2021-06-27 00:09:52 UTC?
    a (km):
 ```
 
-The first challenge in this category was to derive the orbital elements from the position and velocity of a spacecraft at a given time. There are many off-the-shelf tools that can be used to accomplish this, one of which is the [OrbitalPy](https://github.com/RazerM/orbital) package:
+One of the previous challenges in this category was to derive the orbital elements from the position and velocity of a spacecraft at a given time. There are many off-the-shelf tools that can do this, one of which is the [OrbitalPy](https://github.com/RazerM/orbital) package:
 
 ```
 >>> orbit = orbital.KeplerianElements.from_state_vector(position, velocity, orbital.earth, ref_epoch)
@@ -121,7 +121,7 @@ KeplerianElements:
 
 Before the same tool can be applied to *this* problem, some information is needed:
 
-* The position of the satellite at the last radar pulse in the J2000 Earth-centered intertial (ECI) coordinate frame
+* The position of the satellite at the last radar pulse in the J2000 [Earth-centered intertial (ECI)]https://en.wikipedia.org/wiki/Earth-centered_inertial) coordinate frame
 * The velocity of the satellite at the last radar pulse in m/s
 * The reference epoch provided in the prompt: `2021-06-27 00:09:52 UTC`
 
@@ -139,7 +139,7 @@ Feeding the last line of [`radar_data.txt`](./radar_data.txt) into this converte
 
 ### Velocity
 
-Velocity is the other half of the puzzle. Getting an accurate velocity with the data provided is not as simple as it might seem. Our initial, naive strategy was to estimate it by taking the difference of two positions. The issue is that the resulting velocity occurs at some unknown point between the two positions. Without having more granular data or information about the orbit, a good estimate of instantaneous velocity is hard to determine. This graphic highlights the variance in the orbits calculated from this approach:
+Velocity is the other half of the puzzle. Getting an accurate velocity with the data provided is not as simple as it might seem. Our initial, naive strategy was to estimate it by taking the difference of two positions. The issue is that the resulting velocity occurs at some unknown point between the two positions. Without having more granular data or information about the orbit, a good estimate of instantaneous velocity is hard to determine. This graphic highlights the variance in the orbits using this approach:
 
 <div align="center">
 
@@ -152,10 +152,10 @@ Velocity is the other half of the puzzle. Getting an accurate velocity with the 
 
 > The transfer time of a body moving between two points on a conic trajectory is a function only of the sum of the distances of the two points from the origin of the force, the linear distance between the points, and the semimajor axis of the conic.
 
-Knowing the initial position, final position, time, and gravitational constant of the central body, the velocity at a given point can be determined. Fortunately, Lambert solvers are widely available. The Python package [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit) contains the solver we used to complete this problem:
+Knowing the initial position, final position, time, and gravitational parameter of the central body, the velocity at a given point can be determined. And fortunately, Lambert solvers are widely available. The Python package [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit) contains the solver we used to complete this problem:
 
 ```
-initial_veloctiy, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_pos, dt, earth_mu)
+initial_veloctiy, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_pos, flight_time, earth_mu)
 ``` 
 
 ### Final Orbit
