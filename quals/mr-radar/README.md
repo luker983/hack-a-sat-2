@@ -143,7 +143,7 @@ Velocity is not as straightforward.
 
 The initial, naive approach we took was to take the difference of the last two position. The server did not accept the resulting orbit, presumably because the velocity we calculated was the velocity of the satellite at some unknown point in between the two final positions. Without knowing more about the orbit or having more granular data, it's difficult to get a good estimate of the instantaneous velocity. 
 
-The next failed strategy was to guess the orbit in the same way, but at each radar pulse. The orbital elements should be the same (except the true anomaly) across the whole orbit, so we hoped that averaging them and substituting in the correct true anomaly and the correct timestamp might give a better estimate. We attempted to further improve our estimates by guessing that our calculated velocities ocurred about halfway between the two positions to no avail. 
+The next failed strategy was to guess the orbit in the same way, but at each radar pulse. The orbital elements should be the same (except the true anomaly) across the whole orbit, so we hoped that averaging them and substituting in the correct true anomaly and the correct timestamp might give a better estimate. We attempted to further improve our estimates by assuming that our calculated velocities ocurred about halfway between the two positions to no avail. 
 
 This is a plot of each orbit using the velocity at each pair of radar pulses from one of our team members. It demostrates that there is too much variance to get an accurate result:
 
@@ -152,8 +152,7 @@ This is a plot of each orbit using the velocity at each pair of radar pulses fro
 ![Orbit Estimations](img/estimates.png)
 </div>
 
-Once we accepted that our velocity estimates would need to be improved, a team member found [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem)
-
+Once we decided that our velocity estimates would need to be improved, a team member found [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem)
  
 
 <div align="center">
