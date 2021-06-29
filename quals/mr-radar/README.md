@@ -119,11 +119,25 @@ KeplerianElements:
         Epoch (epoch)                            = 2021-06-26 19:20:00
 ```
 
-If we are going to use the same tool to get the orbital elements in this problem, we need a few things:
+Before we can apply the same tool to estimate the orbital elements in this problem, we need a few things:
 
-* The position of the satellite at the last radar pulse using the J2000 coordinate system
+* The position of the satellite at the last radar pulse in the J2000 Earth-centered intertial (ECI) coordinate frame
 * The velocity of the satellite at the last radar pulse in km/s
 * The reference epoch provided to us in the prompt: `2021-06-27 00:09:52 UTC`
+
+### Position
+
+We have the azimuth, elevation, and range (AER) of the satellite from the perspective of an observer in Kwajalein. Knowing the location of the observer, we can convert between AER and ECI coordinates. 
+
+The [Pymap3d](https://github.com/geospace-code/pymap3d) package provides several coordinate conversions, including `aer2eci()`:
+
+```
+x, y, z = pymap3d.aer2eci(azimuth, elevation, range * 1000, latitude, longitude, altitude, time, deg=True)
+```
+
+Feeding the last line of [`radar_data.txt`] into this converter gives us the correct position in the proper coordinate system for [OrbitalPy](https://github.com/RazerM/orbital). 
+
+### Velocity
 
 <div align="center">
 
@@ -133,3 +147,5 @@ If we are going to use the same tool to get the orbital elements in this problem
 ## Resources
 
 * [OrbitalPy](https://github.com/RazerM/orbital)
+* [Earth-centered inertial (ECI)](https://en.wikipedia.org/wiki/Earth-centered_inertial)
+* [Pymap3d](https://github.com/geospace-code/pymap3d)
