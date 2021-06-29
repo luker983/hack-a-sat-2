@@ -57,7 +57,7 @@ time az(deg) el(deg) range(km)
 ...
 ```
 
-Connecting to the server and providing the ticket gives us no new information, but it does have a lovely banner:
+Connecting to the server and providing the ticket gives no new information, but it does have a lovely banner:
 
 ```
                              RADAR
@@ -119,15 +119,15 @@ KeplerianElements:
         Epoch (epoch)                            = 2021-06-26 19:20:00
 ```
 
-Before we can apply the same tool to estimate the orbital elements in this problem, we need a few things:
+Before the same tool can be applied to this problem, some information is needed:
 
 * The position of the satellite at the last radar pulse in the J2000 Earth-centered intertial (ECI) coordinate frame
 * The velocity of the satellite at the last radar pulse in km/s
-* The reference epoch provided to us in the prompt: `2021-06-27 00:09:52 UTC`
+* The reference epoch provided in the prompt: `2021-06-27 00:09:52 UTC`
 
 ### Position
 
-We have the azimuth, elevation, and range (AER) of the satellite from the perspective of an observer in Kwajalein. Knowing the location of the observer, we can convert between AER and ECI coordinates. 
+Knowing the azimuth, elevation, and range (AER) of the satellite from the perspective of an observer in Kwajalein along with the location of the observer is enough to convert between AER and ECI coordinates. 
 
 The [Pymap3d](https://github.com/geospace-code/pymap3d) package provides several coordinate conversions, including `aer2eci()`:
 
@@ -135,9 +135,26 @@ The [Pymap3d](https://github.com/geospace-code/pymap3d) package provides several
 x, y, z = pymap3d.aer2eci(azimuth, elevation, range * 1000, latitude, longitude, altitude, time, deg=True)
 ```
 
-Feeding the last line of [`radar_data.txt`] into this converter gives us the correct position in the proper coordinate system for [OrbitalPy](https://github.com/RazerM/orbital). 
+Feeding the last line of [`radar_data.txt`](./radar_data.txt) into this converter gives the correct position in the proper coordinate system for [OrbitalPy](https://github.com/RazerM/orbital). 
 
 ### Velocity
+
+Velocity is not as straightforward.
+
+The initial, naive approach we took was to take the difference of the last two position. The server did not accept the resulting orbit, presumably because the velocity we calculated was the velocity of the satellite at some unknown point in between the two final positions. Without knowing more about the orbit or having more granular data, it's difficult to get a good estimate of the instantaneous velocity. 
+
+The next failed strategy was to guess the orbit in the same way, but at each radar pulse. The orbital elements should be the same (except the true anomaly) across the whole orbit, so we hoped that averaging them and substituting in the correct true anomaly and the correct timestamp might give a better estimate. We attempted to further improve our estimates by guessing that our calculated velocities ocurred about halfway between the two positions to no avail. 
+
+This is a plot of each orbit using the velocity at each pair of radar pulses from one of our team members. It demostrates that there is too much variance to get an accurate result:
+
+<div align="center">
+
+![Orbit Estimations](img/estimates.png)
+</div>
+
+Once we accepted that our velocity estimates would need to be improved, a team member found [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem)
+
+ 
 
 <div align="center">
 
@@ -149,3 +166,4 @@ Feeding the last line of [`radar_data.txt`] into this converter gives us the cor
 * [OrbitalPy](https://github.com/RazerM/orbital)
 * [Earth-centered inertial (ECI)](https://en.wikipedia.org/wiki/Earth-centered_inertial)
 * [Pymap3d](https://github.com/geospace-code/pymap3d)
+* [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem)
