@@ -155,7 +155,7 @@ Velocity is the other half of the puzzle. Getting an accurate velocity with the 
 Knowing the initial position, final position, time, and gravitational parameter of the central body, the velocity at a given point can be determined. And fortunately, Lambert solvers are widely available. The Python package [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit) contains the solver we used to complete this problem:
 
 ```
-initial_veloctiy, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_pos, flight_time, earth_mu)
+initial_velocity, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_pos, flight_time, earth_mu)
 ``` 
 
 ### Final Orbit
