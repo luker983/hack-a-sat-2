@@ -139,6 +139,48 @@ Feeding the last line of [`radar_data.txt`](./radar_data.txt) into this converte
 
 ### Velocity
 
+Velocity is the final piece of the puzzle. Getting an accurate velocity with the data provided is not as trivial as it might seem. [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem) addresses this issue:
+
+> Lambert's problem is concerned with the determination of an orbit from two position vectors and the time of flight
+
+Knowing the initial position, final position, time, and gravitational constant of the central body, the velocity at a given point can be determined. 
+
+Lambert solvers are widely available. The Python package [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit) contains the solver we used to complete this problem:
+
+```
+initial_veloctiy, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_pos, dt, earth_mu)
+``` 
+
+### Final Orbit
+
+The terminal velocity from this function gives us everything needed to solve the challenge. 
+
+```
+KeplerianElements:
+    Semimajor axis (a)                           =  22998.794 km
+    Eccentricity (e)                             =      0.699924
+    Inclination (i)                              =     34.0 deg
+    Right ascension of the ascending node (raan) =     78.0 deg
+    Argument of perigee (arg_pe)                 =    270.0 deg
+    Mean anomaly at reference epoch (M0)         =     10.2 deg
+    Period (T)                                   = 9:38:31.115455
+    Reference epoch (ref_epoch)                  = 2021-06-27 00:09:52
+        Mean anomaly (M)                         =     10.2 deg
+        Time (t)                                 = 0:00:00
+        Epoch (epoch)                            = 2021-06-27 00:09:52
+```
+
+```
+You got it! Here's your flag:
+flag{hotel708324victor2:GBDfMKHe9sabPGjWiePSWjczCxmWtNBYx0uNkkEwWMA1oPuptBlrACo5K2HXLupqJVpQwJhPcJUMpD-chTNrLwA}
+```
+
+<div align="center">
+
+![Orbit Animation](img/orbit.gif)
+</div>
+
+
 Velocity is not as straightforward.
 
 The initial, naive approach we took was to take the difference of the last two position. The server did not accept the resulting orbit, presumably because the velocity we calculated was the velocity of the satellite at some unknown point in between the two final positions. Without knowing more about the orbit or having more granular data, it's difficult to get a good estimate of the instantaneous velocity. 
@@ -152,13 +194,8 @@ This is a plot of each orbit using the velocity at each pair of radar pulses fro
 ![Orbit Estimations](img/estimates.png)
 </div>
 
-Once we decided that our velocity estimates would need to be improved, a team member found [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem)
- 
+Once we decided that our velocity estimates would need to be improved, a team member found [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem):
 
-<div align="center">
-
-![Orbit Animation](img/orbit.gif)
-</div>
 
 ## Resources
 
@@ -166,3 +203,4 @@ Once we decided that our velocity estimates would need to be improved, a team me
 * [Earth-centered inertial (ECI)](https://en.wikipedia.org/wiki/Earth-centered_inertial)
 * [Pymap3d](https://github.com/geospace-code/pymap3d)
 * [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem)
+* [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit)
