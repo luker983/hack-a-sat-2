@@ -100,7 +100,7 @@ What is the satellite's orbit at 2021-06-27 00:09:52 UTC?
    a (km):
 ```
 
-The first challenge in this category was to derive the orbital elements from the position and velocity of a spacecraft at a given time. There are many off-the-shelf tools that can be used to solve this problem, one of which is the [OrbitalPy](https://github.com/RazerM/orbital) package:
+The first challenge in this category was to derive the orbital elements from the position and velocity of a spacecraft at a given time. There are many off-the-shelf tools that can be used to accomplish this, one of which is the [OrbitalPy](https://github.com/RazerM/orbital) package:
 
 ```
 >>> orbit = orbital.KeplerianElements.from_state_vector(position, velocity, orbital.earth, ref_epoch)
@@ -119,10 +119,10 @@ KeplerianElements:
         Epoch (epoch)                            = 2021-06-26 19:20:00
 ```
 
-Before the same tool can be applied to this problem, some information is needed:
+Before the same tool can be applied to *this* problem, some information is needed:
 
 * The position of the satellite at the last radar pulse in the J2000 Earth-centered intertial (ECI) coordinate frame
-* The velocity of the satellite at the last radar pulse in km/s
+* The velocity of the satellite at the last radar pulse in m/s
 * The reference epoch provided in the prompt: `2021-06-27 00:09:52 UTC`
 
 ### Position
@@ -139,13 +139,20 @@ Feeding the last line of [`radar_data.txt`](./radar_data.txt) into this converte
 
 ### Velocity
 
-Velocity is the final piece of the puzzle. Getting an accurate velocity with the data provided is not as trivial as it might seem. [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem) addresses this issue:
+Velocity is the other half of the puzzle. Getting an accurate velocity with the data provided is not as simple as it might seem. Our initial, naive strategy was to estimate it by taking the difference of two positions. The issue is that the resulting velocity occurs at some unknown point between the two positions. Without having more granular data or information about the orbit, a good estimate of instantaneous velocity is hard to determine. This graphic highlights the variance in the orbits calculated from this approach:
+
+<div align="center">
+
+![Orbit Estimations](img/estimates.png)
+</div>
+
+[Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem) addresses this issue:
 
 > Lambert's problem is concerned with the determination of an orbit from two position vectors and the time of flight
 
-Knowing the initial position, final position, time, and gravitational constant of the central body, the velocity at a given point can be determined. 
+> The transfer time of a body moving between two points on a conic trajectory is a function only of the sum of the distances of the two points from the origin of the force, the linear distance between the points, and the semimajor axis of the conic.
 
-Lambert solvers are widely available. The Python package [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit) contains the solver we used to complete this problem:
+Knowing the initial position, final position, time, and gravitational constant of the central body, the velocity at a given point can be determined. Fortunately, Lambert solvers are widely available. The Python package [pytwobodyorbit](https://github.com/whiskie14142/pytwobodyorbit) contains the solver we used to complete this problem:
 
 ```
 initial_veloctiy, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_pos, dt, earth_mu)
@@ -153,9 +160,11 @@ initial_veloctiy, terminal_velocity = pytwobodyorbit.lambert(initial_pos, final_
 
 ### Final Orbit
 
-The terminal velocity from this function gives us everything needed to solve the challenge. 
+With the final AER coordinates converted to ECI and the terminal velocity from the Lambert function, we now have everything we need to get the orbital elements. 
 
 ```
+>>> orbit = orbital.KeplerianElements.from_state_vector(final_pos, terminal_velocity, orbital.earth, ref_epoch)
+>>> print(orbit)
 KeplerianElements:
     Semimajor axis (a)                           =  22998.794 km
     Eccentricity (e)                             =      0.699924
@@ -168,6 +177,8 @@ KeplerianElements:
         Mean anomaly (M)                         =     10.2 deg
         Time (t)                                 = 0:00:00
         Epoch (epoch)                            = 2021-06-27 00:09:52
+>> print(math.degrees(orbit.f)) # true anomaly
+66.3620935130588
 ```
 
 ```
@@ -179,23 +190,6 @@ flag{hotel708324victor2:GBDfMKHe9sabPGjWiePSWjczCxmWtNBYx0uNkkEwWMA1oPuptBlrACo5
 
 ![Orbit Animation](img/orbit.gif)
 </div>
-
-
-Velocity is not as straightforward.
-
-The initial, naive approach we took was to take the difference of the last two position. The server did not accept the resulting orbit, presumably because the velocity we calculated was the velocity of the satellite at some unknown point in between the two final positions. Without knowing more about the orbit or having more granular data, it's difficult to get a good estimate of the instantaneous velocity. 
-
-The next failed strategy was to guess the orbit in the same way, but at each radar pulse. The orbital elements should be the same (except the true anomaly) across the whole orbit, so we hoped that averaging them and substituting in the correct true anomaly and the correct timestamp might give a better estimate. We attempted to further improve our estimates by assuming that our calculated velocities ocurred about halfway between the two positions to no avail. 
-
-This is a plot of each orbit using the velocity at each pair of radar pulses from one of our team members. It demostrates that there is too much variance to get an accurate result:
-
-<div align="center">
-
-![Orbit Estimations](img/estimates.png)
-</div>
-
-Once we decided that our velocity estimates would need to be improved, a team member found [Lambert's problem](https://en.wikipedia.org/wiki/Lambert%27s_problem):
-
 
 ## Resources
 
